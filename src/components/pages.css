@@ -1,0 +1,135 @@
+* {
+   margin: 0;
+   box-sizing: border-box;
+   font-family: "CustomFont";
+}
+
+/* Register */
+
+@font-face {
+   font-family: "CustomFont";
+   src: url("./Kanit-ExtraLight.ttf");
+}
+
+html {
+   font-family: "Nunito", sans-serif;
+   font-size: 22px;
+   color: #ffdada;
+}
+
+section {
+   width: 100%;
+   max-width: 420px;
+   min-height: 400px;
+   display: flex;
+   flex-direction: column;
+   justify-content: flex-start;
+   padding: 1rem;
+   background-color: rgba(0, 0, 0, 0.4);
+}
+
+form {
+   display: flex;
+   flex-direction: column;
+   justify-content: space-evenly;
+   flex-grow: 1;
+   padding-bottom: 1rem;
+}
+
+a,
+a:visited {
+   color: #000000;
+}
+
+input[type="text"],
+input[type="password"],
+button,
+textarea {
+   font-family: "Nunito", sans-serif;
+   font-size: 22px;
+   padding: 0.25rem;
+   border-radius: 0.5rem;
+}
+
+label,
+button {
+   margin-top: 1rem;
+}
+
+button {
+   padding: 0.5rem;
+}
+
+.hide {
+   display: none;
+}
+
+.line {
+   display: inline-block;
+}
+
+/* Home */
+
+.bank {
+   margin: 1em auto;
+   text-align: center;
+}
+
+.h1 {
+   margin: auto auto;
+   text-align: center;
+}
+
+/* Error Message */
+
+.center {
+   margin-left: 230px;
+}
+
+/* Home Page Card */
+
+.home-card {
+   margin-top: 2em;
+   margin-bottom: 4em;
+}
+
+.card-title {
+   font-size: 4em;
+   margin-left: 32%;
+   margin-top: 10%;
+}
+
+.card-text {
+   font-size: 3em;
+   margin-top: 5%;
+   margin-left: 10%;
+}
+
+#signInDiv {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
+
+.google-account-heading {
+   position: relative;
+   text-align: center;
+}
+
+/* create account with google text */
+
+.container-wrapper {
+   display: flex;
+   justify-content: flex-start;
+   align-items: center;
+}
+
+.card-container {
+   margin-right: 20px;
+}
+
+.google-account {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+}

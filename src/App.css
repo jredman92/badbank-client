@@ -1,0 +1,15 @@
+.card {
+   margin: 0 auto;
+}
+
+h3 {
+   margin: 20px 0px 20px 6em;
+}
+
+/* Current User */
+
+.user-display-container {
+   position: absolute;
+   top: 30px;
+   right: 100px;
+}
