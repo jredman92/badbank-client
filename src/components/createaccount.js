@@ -58,7 +58,7 @@ export default function CreateAccount() {
 
             // Send a POST request to create a new account
             const response = await axios.post(
-               "https://badbankmit-e7fce5c065f0.herokuapp.com/",
+               "https://badbankmit-e7fce5c065f0.herokuapp.com/accounts",
                // "http://localhost:5000/accounts",
                values
             );
