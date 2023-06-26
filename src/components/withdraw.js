@@ -21,7 +21,7 @@ export default function Withdraw() {
 
          try {
             const response = await axios.post(
-               "https://badbank-jredman-38dc8ea94c94.herokuapp.com/accounts/withdraw",
+               "https://badbankmit-e7fce5c065f0.herokuapp.com/",
                // "http://localhost:5000/accounts/withdraw",
                { amount, email }
             );
