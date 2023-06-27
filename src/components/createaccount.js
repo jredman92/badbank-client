@@ -109,7 +109,26 @@ export default function CreateAccount() {
          actions.setSuccess(false);
       },
       validate: (values) => {
-         // Validation logic
+         const errors = {};
+
+         // Password validation
+         if (!values.password || values.password.length < 8) {
+            errors.password = "Password must be at least 8 characters";
+         }
+
+         // Email validation
+         if (!values.email) {
+            errors.email = "E-mail is required";
+         }
+
+         // Name validation
+         if (!values.name) {
+            errors.name = "Name is required";
+         } else if (!/\S+@\S+\.\S+/.test(values.email)) {
+            errors.email = "Not a valid e-mail";
+         }
+
+         return errors;
       },
    });
 

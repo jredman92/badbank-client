@@ -9,7 +9,7 @@ const initialState = {
       {
          name: "Jaymie",
          email: "jredman92@gmail.com",
-         password: "secret",
+         password: "secret11",
          balance: 1000,
          transactions: [],
       },

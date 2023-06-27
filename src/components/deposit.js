@@ -4,6 +4,7 @@ import { useContext } from "react";
 import { Store } from "../AppState/Store";
 import Card from "../util/card";
 import Error from "../util/error";
+
 export default function Deposit() {
    const { state, actions } = useContext(Store);
 
@@ -14,7 +15,19 @@ export default function Deposit() {
 
       onSubmit: async (values) => {
          const amount = parseFloat(values.amount);
-         const email = state.currentUser.email; // Accesses state of current user
+         let email;
+
+         if (state.currentUser) {
+            // If the user is logged in with a regular account
+            email = state.currentUser.email;
+         } else if (state.googleUser) {
+            // If the user is logged in with a Google account
+            email = state.googleUser.email;
+         } else {
+            // Handle the case where no user is logged in
+            console.log("No user logged in");
+            return;
+         }
 
          try {
             const response = await axios.post(
