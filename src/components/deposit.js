@@ -33,7 +33,7 @@ export default function Deposit() {
 
          try {
             const response = await axios.post(
-               "https://badbankmit-e7fce5c065f0.herokuapp.com/accounts/deposit",
+               "https://badbankmit-630937f70977.herokuapp.com//accounts/deposit",
                // "http://localhost:5000/accounts/deposit",
                { amount, email }
             );
