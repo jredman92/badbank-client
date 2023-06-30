@@ -25,7 +25,8 @@ export default function CreateAccount() {
       try {
          const accountData = { email, displayName: name, googleId };
          const response = await axios.post(
-            "http://localhost:5000/accounts",
+            // "http://localhost:5000/accounts",
+            "https://badbankmit-630937f70977.herokuapp.com/accounts",
             accountData
          );
          console.log(response.status);
