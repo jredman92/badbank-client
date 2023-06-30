@@ -2,6 +2,7 @@ import axios from "axios";
 import { useFormik } from "formik";
 import jwt_decode from "jwt-decode";
 import { useContext, useEffect, useState } from "react";
+import { useMediaQuery } from "react-responsive";
 import { Store } from "../AppState/Store";
 import Card from "../util/card";
 import Error from "../util/error";
@@ -13,19 +14,28 @@ export default function CreateAccount() {
 
    const { actions } = useContext(Store);
 
-   function handleCallbackResponse(response) {
-      console.log("Encoded JWT ID token: " + response.credential);
+   async function handleCallbackResponse(response) {
       var userObject = jwt_decode(response.credential);
       console.log(userObject);
       setShowGoogleLogin(false);
 
-      // Automatically create an account for the user if logging in with Google
-      const { email, name } = userObject;
-      actions.addUser({ email, name, balance: 0 }); // Set balance to 0
-      actions.logIn({ email }); // Log in the user after creating the account
+      // Create an account for the user if logging in with Google
+      const { email, name, googleId } = userObject;
 
-      actions.setSuccess(true); // Show the success message
-      setShow(false); // Hide the form
+      try {
+         const accountData = { email, displayName: name, googleId };
+         const response = await axios.post(
+            "http://localhost:5000/accounts",
+            accountData
+         );
+         console.log(response.status);
+         actions.addUser({ email, name, balance: 0 }); // Add the user to the global state
+         actions.setSuccess(true);
+         setShow(false);
+      } catch (error) {
+         if (error.response) {
+         }
+      }
    }
 
    useEffect(() => {
@@ -53,53 +63,20 @@ export default function CreateAccount() {
       },
       onSubmit: async (values, { resetForm }) => {
          try {
-            // Add the user to the global state
             actions.addUser({ ...values, balance: 0 });
 
-            // Send a POST request to create a new account
             const response = await axios.post(
                "https://badbankmit-e7fce5c065f0.herokuapp.com/accounts",
                // "http://localhost:5000/accounts",
                values
             );
 
-            // Account creation successful
-            console.log(response); // You can handle the response data as needed
+            console.log(response.status);
 
             resetForm();
-            setShow(false); // Hide the form
+            setShow(false);
          } catch (error) {
-            // Account creation failed
             if (error.response) {
-               // The request was made and the server responded with a status code
-               console.log("Response status:", error.response.status);
-               console.log("Response data:", error.response.data);
-               // Handle specific errors based on the status code
-               if (error.response.status === 400) {
-                  // Handle validation errors
-                  const validationErrors = error.response.data.errors;
-                  console.log("Validation errors:", validationErrors);
-                  // Display user-friendly error messages for validation errors
-               } else if (error.response.status === 401) {
-                  // Handle unauthorized errors
-                  console.log("Unauthorized error");
-                  // Display user-friendly error message for unauthorized error
-               } else {
-                  // Handle other HTTP errors
-                  console.log(
-                     "Account creation failed with status:",
-                     error.response.status
-                  );
-                  // Display a generic error message for other errors
-               }
-            } else if (error.request) {
-               // The request was made but no response was received
-               console.log("No response received:", error.request);
-               // Handle the error condition when no response is received
-            } else {
-               // Other error occurred during the request
-               console.log("Error:", error.message);
-               // Handle other types of errors
             }
          }
       },
@@ -132,24 +109,23 @@ export default function CreateAccount() {
       },
    });
 
+   const isMobile = useMediaQuery({ maxWidth: 768 });
+
    return (
       <>
-         <br />
-         <hr className="solid" />
+         {!isMobile && <hr className="solid" />}
          <h3>CREATE ACCOUNT</h3>
 
          <Card
-            maxWidth="25em"
+            maxWidth={isMobile ? "100%" : "40%"} // Adjust the maxWidth property to make the card responsive
             header="Create New Account"
             bgcolor="primary"
             body={
                show ? (
                   <form onSubmit={formik.handleSubmit}>
-                     Name
-                     <br />
+                     <label htmlFor="name">Name</label>
                      <input
-                        type="input"
-                        className="form-control"
+                        type="text"
                         id="name"
                         name="name"
                         placeholder="Enter Name"
@@ -157,17 +133,19 @@ export default function CreateAccount() {
                         value={formik.values.name}
                      />
                      <br />
-                     {formik.errors.name ? (
+                     {formik.errors.name && (
                         <Error
-                           position={{ top: "3.6em", left: "21em" }}
+                           position={{
+                              top: "8.2em",
+                              right: "1em",
+                           }}
                            message={formik.errors.name}
                         />
-                     ) : null}
-                     Email Address
-                     <br />
+                     )}
+
+                     <label htmlFor="email">Email Address</label>
                      <input
-                        type="email"
-                        className="form-control"
+                        type="text"
                         id="email"
                         name="email"
                         placeholder="Enter Email"
@@ -175,17 +153,19 @@ export default function CreateAccount() {
                         value={formik.values.email}
                      />
                      <br />
-                     {formik.errors.email ? (
+                     {formik.errors.email && (
                         <Error
-                           position={{ top: "9.5em", left: "21em" }}
+                           position={{
+                              top: "13.8em",
+                              right: "1em",
+                           }}
                            message={formik.errors.email}
                         />
-                     ) : null}
-                     Password
-                     <br />
+                     )}
+
+                     <label htmlFor="password">Password</label>
                      <input
                         type="password"
-                        className="form-control"
                         id="password"
                         name="password"
                         placeholder="Enter Password"
@@ -193,12 +173,17 @@ export default function CreateAccount() {
                         value={formik.values.password}
                      />
                      <br />
-                     {formik.errors.password ? (
+
+                     {formik.errors.password && (
                         <Error
-                           position={{ top: "15.2em", left: "21em" }}
+                           position={{
+                              top: "19.4em",
+                              right: "1em",
+                           }}
                            message={formik.errors.password}
                         />
-                     ) : null}
+                     )}
+                     <div style={{ height: "33px" }}></div>
                      <button
                         type="submit"
                         className="btn btn-light"
@@ -222,13 +207,14 @@ export default function CreateAccount() {
                )
             }
          />
+         <br />
          {showGoogleLogin && (
             <div className="google-account">
                <h6>Create Account With Google</h6>
                <div id="signInDiv"></div>
+               <br />
             </div>
          )}
-         <br />
       </>
    );
 }

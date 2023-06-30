@@ -82,11 +82,11 @@ export default function Navbar() {
                   >
                      Create Account
                   </NavLink>
-                  <div className="user-display-container">
-                     <UserDisplay />
-                  </div>
                </div>
             </div>
+         </div>
+         <div className="user-display-container">
+            <UserDisplay />
          </div>
       </nav>
    );

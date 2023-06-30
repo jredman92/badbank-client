@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import { useMediaQuery } from "react-responsive";
 import { useNavigate } from "react-router-dom";
 import { Store } from "../AppState/Store";
 
@@ -13,14 +14,32 @@ const UserDisplay = () => {
       navigate("/login"); // Redirect to the login page
    };
 
+   const isMobile = useMediaQuery({ maxWidth: 768 });
+
    return (
-      <div>
+      <div
+         className="current-user"
+         style={{
+            position: "absolute",
+            fontSize: isMobile ? "14px" : "18px",
+            right: isMobile ? "-90px" : "6em",
+            top: isMobile ? "-30px" : "-10px",
+            padding: isMobile ? "" : "0px",
+            maxWidth: isMobile ? "" : "100px",
+         }}
+      >
          {currentUser && (
-            <div>
-               Welcome, {currentUser.email}!
+            <>
+               <span style={{ whiteSpace: isMobile ? "nowrap" : "nowrap" }}>
+                  Welcome, {currentUser.email}!
+               </span>
+               <br />
                <span
                   style={{
-                     marginLeft: "1em",
+                     position: "absolute",
+                     fontSize: isMobile ? "12px" : "14px",
+                     whiteSpace: isMobile ? "nowrap" : "nowrap",
+                     right: isMobile ? "0em" : "-11.3em",
                      color: "blue",
                      textDecoration: "underline",
                      cursor: "pointer",
@@ -29,7 +48,7 @@ const UserDisplay = () => {
                >
                   Sign Out
                </span>
-            </div>
+            </>
          )}
       </div>
    );

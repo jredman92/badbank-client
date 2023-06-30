@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useFormik } from "formik";
 import { useContext } from "react";
+import { useMediaQuery } from "react-responsive";
 import { Store } from "../AppState/Store";
 import Card from "../util/card";
 import Error from "../util/error";
@@ -18,6 +19,7 @@ export default function Withdraw() {
       onSubmit: async (values) => {
          const email = state.currentUser.email;
          const amount = parseFloat(values.amount);
+         console.log(amount);
 
          try {
             const response = await axios.post(
@@ -62,13 +64,14 @@ export default function Withdraw() {
       },
    });
 
+   const isMobile = useMediaQuery({ maxWidth: 768 });
+
    return (
       <>
-         <br />
          <hr className="solid"></hr>
          <h3>WITHDRAW</h3>
          <Card
-            maxWidth="40em"
+            maxWidth="50em"
             bgcolor="secondary"
             body={
                <>
@@ -79,30 +82,22 @@ export default function Withdraw() {
                               <div
                                  className="col"
                                  style={{
-                                    fontSize: "100px",
-                                    marginTop: "-40px",
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    fontSize: isMobile ? "2em" : "4em",
                                  }}
                               >
-                                 Balance:{" "}
-                              </div>
-                              <div
-                                 className="col"
-                                 id="user-balance"
-                                 style={{
-                                    fontSize: "100px",
-                                    marginTop: "-40px",
-                                 }}
-                              >
-                                 {state.currentUser.balance}
+                                 Balance: {state.currentUser.balance}
                               </div>
                            </div>
+                           <br />
                            <div className="amount-container">
                               <div className="row">
                                  <h4>Withdraw Amount</h4>
                               </div>
                               <div className="fields">
                                  <input
-                                    style={{ width: "300px" }}
+                                    style={{ width: "210px" }}
                                     type="text"
                                     className="form-control"
                                     id="amountField"
@@ -110,29 +105,30 @@ export default function Withdraw() {
                                     onChange={formik.handleChange}
                                     value={formik.values.amount}
                                     aria-label="withdraw-field"
+                                    autoComplete="off"
                                  />
                                  <br />
+
                                  {formik.errors.amount ? (
                                     <Error
                                        position={{
-                                          top: "11.2em",
-                                          left: "21em",
+                                          top: "17.3em",
+                                          right: "38em",
                                        }}
                                        id="emailError"
                                        message={formik.errors.amount}
                                     />
                                  ) : null}
-                                 <button
-                                    type="submit"
-                                    className="btn btn-primary"
-                                    id="submitBtn"
-                                    disabled={!(formik.isValid && formik.dirty)}
-                                 >
-                                    Withdraw
-                                 </button>
                               </div>
                            </div>
                         </div>
+                        <button
+                           type="submit"
+                           className="btn btn-primary submitBtn"
+                           disabled={!(formik.isValid && formik.dirty)}
+                        >
+                           Withdraw
+                        </button>
                      </form>
                   )}
                   {!state.currentUser && <div>Must Be Logged-In</div>}
@@ -140,15 +136,6 @@ export default function Withdraw() {
             }
          />
          <br />
-         {state.success && (
-            <div
-               className={"alert alert-success mx-auto w-25 p-2"}
-               role="alert"
-               style={{ height: "110px" }}
-            >
-               <p className="fs-1 text-center">Success!</p>
-            </div>
-         )}
          <div className="center">
             {state.error && (
                <Error

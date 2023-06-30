@@ -1,6 +1,8 @@
+import axios from "axios";
 import { useFormik } from "formik";
 import jwt_decode from "jwt-decode";
 import { useContext, useEffect, useState } from "react";
+import { useMediaQuery } from "react-responsive";
 import { Store } from "../AppState/Store";
 import Card from "../util/card";
 import Error from "../util/error";
@@ -55,6 +57,7 @@ export default function Login() {
             }
          }
       },
+
       validate: (values) => {
          const errors = {};
          if (!values.email) {
@@ -64,22 +67,26 @@ export default function Login() {
          ) {
             errors.email = "Invalid email address";
          }
+         if (!values.password) {
+            errors.password = "Must enter password";
+         }
+
          return errors;
       },
    });
 
+   const isMobile = useMediaQuery({ maxWidth: 768 });
+
    return (
       <>
-         <br />
          <hr className="solid"></hr>
-         <h3>{state.currentUser ? "PROFILE" : "LOGIN"}</h3>
+         <h3>{state.currentUser ? "WELCOME!" : "LOGIN"}</h3>
+
          <Card
             bgcolor="primary"
-            maxWidth="25em"
+            maxWidth={isMobile ? "100%" : "40%"} // Adjust the maxWidth property to make the card responsive
             header={
-               state.currentUser
-                  ? "Profile"
-                  : "Login Using Existing Credentials"
+               state.currentUser ? "Login" : "Login Using Existing Credentials"
             }
             body={
                !state.currentUser ? (
@@ -89,10 +96,9 @@ export default function Login() {
                         data-testid="login-form"
                      >
                         <div className="mb-3">
-                           <div>Email</div>
+                           <label htmlFor="email">Email</label>
                            <input
-                              type="input"
-                              className="form-control"
+                              type="text"
                               id="emlField"
                               name="email"
                               placeholder="Email"
@@ -100,10 +106,12 @@ export default function Login() {
                               value={formik.values.email}
                               aria-label="email-field"
                            />
+                           <div style={{ height: "10px" }} />
+
                            {formik.errors.email ? (
                               <Error
                                  maxWidth="10em"
-                                 position={{ top: "3.5em", left: "21em" }}
+                                 position={{ top: "8.3em", right: "1em" }}
                                  id="emailError"
                                  message={formik.errors.email}
                               />
@@ -113,7 +121,6 @@ export default function Login() {
                            <label htmlFor="pswField">Password</label>
                            <input
                               type="password"
-                              className="form-control"
                               id="pswField"
                               name="password"
                               placeholder="Password"
@@ -121,8 +128,14 @@ export default function Login() {
                               value={formik.values.password}
                               aria-label="password-field"
                            />
+                           <br />
+
+                           <div style={{ height: "40px" }}></div>
+
                            {formik.errors.password ? (
                               <Error
+                                 maxWidth="10em"
+                                 position={{ top: "13.9em", right: "1em" }}
                                  id="emailError"
                                  message={formik.errors.password}
                               />
@@ -151,8 +164,9 @@ export default function Login() {
          <br />
          {showGoogleLogin && (
             <div className="google-account">
-               <h6>Log In With Google</h6>
+               <h6>Login With Google</h6>
                <div id="signInDiv"></div>
+               <br />
             </div>
          )}
       </>

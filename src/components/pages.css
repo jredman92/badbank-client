@@ -12,8 +12,8 @@
 }
 
 html {
-   font-family: "Nunito", sans-serif;
-   font-size: 22px;
+   /* font-family: "Nunito", sans-serif; */
+   font-size: 18px;
    color: #ffdada;
 }
 
@@ -45,6 +45,7 @@ input[type="text"],
 input[type="password"],
 button,
 textarea {
+   width: 100%;
    font-family: "Nunito", sans-serif;
    font-size: 22px;
    padding: 0.25rem;
@@ -53,7 +54,7 @@ textarea {
 
 label,
 button {
-   margin-top: 1rem;
+   margin-top: 0rem;
 }
 
 button {
@@ -75,7 +76,7 @@ button {
    text-align: center;
 }
 
-.h1 {
+h1 {
    margin: auto auto;
    text-align: center;
 }
@@ -91,18 +92,21 @@ button {
 .home-card {
    margin-top: 2em;
    margin-bottom: 4em;
+   width: 70vw;
+   padding: 0;
 }
 
 .card-title {
-   font-size: 4em;
-   margin-left: 32%;
+   font-size: 5vw;
+   text-align: center;
    margin-top: 10%;
 }
 
 .card-text {
-   font-size: 3em;
+   font-size: 4vw;
    margin-top: 5%;
-   margin-left: 10%;
+   /* margin-left: 10%; */
+   text-align: center;
 }
 
 #signInDiv {
@@ -132,4 +136,36 @@ button {
    display: flex;
    flex-direction: column;
    align-items: center;
+}
+
+.submitBtn {
+   width: 40%;
+   margin: 0 auto;
+}
+
+.col-md-8 {
+   padding: 0 0 1px 1px;
+}
+.col-md-4 {
+   justify-content: center;
+}
+
+.home-container {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+}
+
+/* mobile settings */
+
+@media (max-width: 768px) {
+   .card-title {
+      font-size: 2em; /* Decrease the font size for mobile devices */
+      margin-left: 0; /* Remove the left margin for mobile devices */
+   }
+
+   .card-text {
+      font-size: 1.5em; /* Decrease the font size for mobile devices */
+      margin-left: 0; /* Remove the left margin for mobile devices */
+   }
 }
