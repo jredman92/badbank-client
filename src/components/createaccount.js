@@ -66,7 +66,7 @@ export default function CreateAccount() {
             actions.addUser({ ...values, balance: 0 });
 
             const response = await axios.post(
-               "https://badbankmit-630937f70977.herokuapp.com//accounts",
+               "https://badbankmit-630937f70977.herokuapp.com/accounts",
                // "http://localhost:5000/accounts",
                values
             );
