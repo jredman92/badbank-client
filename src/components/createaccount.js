@@ -27,7 +27,7 @@ export default function CreateAccount() {
          const accountData = { email, name, googleId };
          const response = await axios.post(
             // "http://localhost:5000/accounts",
-            "https://badbankmit-630937f70977.herokuapp.com/accounts",
+            "https://badbankmit-cdb124d9b6ac.herokuapp.com/accounts",
             accountData
          );
          console.log(response.status);
@@ -71,7 +71,7 @@ export default function CreateAccount() {
             actions.addUser({ ...values, balance: 0 });
 
             const response = await axios.post(
-               "https://badbankmit-630937f70977.herokuapp.com/accounts",
+               "https://badbankmit-cdb124d9b6ac.herokuapp.com/accounts",
                // "http://localhost:5000/accounts",
                values
             );
