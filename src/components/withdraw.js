@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useFormik } from "formik";
 import { useContext } from "react";
 import { useMediaQuery } from "react-responsive";
@@ -6,7 +5,6 @@ import { Store } from "../AppState/Store";
 import Card from "../util/card";
 import Error from "../util/error";
 
-// import { valuesIn } from "lodash";
 import "./pages.css";
 
 export default function Withdraw() {
@@ -17,36 +15,8 @@ export default function Withdraw() {
          amount: 0,
       },
       onSubmit: async (values) => {
-         const email = state.currentUser.email;
          const amount = parseFloat(values.amount);
-         console.log(amount);
-
-         try {
-            const response = await axios.post(
-               "https://badbankmit-630937f70977.herokuapp.com/accounts/withdraw",
-               // "http://localhost:5000/accounts/withdraw",
-               { amount, email }
-            );
-
-            if (response.status === 200) {
-               actions.withdraw(amount);
-               actions.setSuccess(true);
-
-               setTimeout(() => {
-                  actions.setSuccess(false);
-               }, 3000);
-            } else {
-               console.log("Withdrawal failed with status:", response.status);
-            }
-         } catch (error) {
-            console.log("Error:", error);
-            actions.setSuccess(false);
-            actions.setError(true);
-
-            setTimeout(() => {
-               actions.setError(false);
-            }, 3000);
-         }
+         actions.withdraw(amount);
       },
 
       validate: (values) => {
@@ -112,8 +82,8 @@ export default function Withdraw() {
                                  {formik.errors.amount ? (
                                     <Error
                                        position={{
-                                          top: "17.3em",
-                                          right: "38em",
+                                          right: isMobile ? "8em" : "37.3em",
+                                          top: isMobile ? "11.7em" : "14.9em",
                                        }}
                                        id="emailError"
                                        message={formik.errors.amount}
@@ -122,6 +92,7 @@ export default function Withdraw() {
                               </div>
                            </div>
                         </div>
+                        <br />
                         <button
                            type="submit"
                            className="btn btn-primary submitBtn"
@@ -140,8 +111,8 @@ export default function Withdraw() {
             {state.error && (
                <Error
                   position={{
-                     top: "19.2em",
-                     left: "45em",
+                     right: isMobile ? "8em" : "37.3em",
+                     top: isMobile ? "11.7em" : "14.9em",
                   }}
                   message="Transaction Failed"
                />

@@ -1,17 +1,13 @@
 import React, { useContext } from "react";
 import { useMediaQuery } from "react-responsive";
-import { useNavigate } from "react-router-dom";
 import { Store } from "../AppState/Store";
 
 const UserDisplay = () => {
    const { state, dispatch } = useContext(Store);
    const { currentUser } = state;
 
-   const navigate = useNavigate();
-
    const handleSignOut = () => {
       dispatch({ type: "SIGNOUT" });
-      navigate("/login"); // Redirect to the login page
    };
 
    const isMobile = useMediaQuery({ maxWidth: 768 });
@@ -22,15 +18,20 @@ const UserDisplay = () => {
          style={{
             position: "absolute",
             fontSize: isMobile ? "14px" : "18px",
-            right: isMobile ? "-90px" : "6em",
-            top: isMobile ? "-30px" : "-10px",
+            right: isMobile ? "-90px" : "5em",
+            top: isMobile ? "-30px" : "-1.5em",
             padding: isMobile ? "" : "0px",
-            maxWidth: isMobile ? "" : "100px",
          }}
       >
          {currentUser && (
             <>
-               <span style={{ whiteSpace: isMobile ? "nowrap" : "nowrap" }}>
+               <span
+                  style={{
+                     position: "absolute",
+                     whiteSpace: isMobile ? "nowrap" : "nowrap",
+                     right: isMobile ? "0em" : "-9em",
+                  }}
+               >
                   Welcome, {currentUser.email}!
                </span>
                <br />

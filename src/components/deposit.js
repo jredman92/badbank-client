@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useFormik } from "formik";
 import { useContext } from "react";
 import { useMediaQuery } from "react-responsive";
@@ -8,6 +7,7 @@ import Error from "../util/error";
 
 export default function Deposit() {
    const { state, actions } = useContext(Store);
+   const isMobile = useMediaQuery({ maxWidth: 768 });
 
    const formik = useFormik({
       initialValues: {
@@ -16,50 +16,7 @@ export default function Deposit() {
 
       onSubmit: async (values) => {
          const amount = parseFloat(values.amount);
-         let email;
-         console.log(amount);
-
-         if (state.currentUser) {
-            // If the user is logged in with a regular account
-            email = state.currentUser.email;
-         } else if (state.googleUser) {
-            // If the user is logged in with a Google account
-            email = state.googleUser.email;
-         } else {
-            // Handle the case where no user is logged in
-            console.log("No user logged in");
-            return;
-         }
-
-         try {
-            const response = await axios.post(
-               "https://badbankmit-630937f70977.herokuapp.com/accounts/deposit",
-               // "http://localhost:5000/accounts/deposit",
-               { amount, email }
-            );
-
-            if (response.status) {
-               // Deposit successful, perform any necessary actions
-               actions.deposit(amount);
-               actions.setSuccess(true);
-
-               setTimeout(() => {
-                  actions.setSuccess(false);
-               }, 3000);
-            } else {
-               // Handle deposit failure
-               console.log("Deposit failed");
-            }
-         } catch (error) {
-            // Handle network or other errors
-            console.log("Error:", error);
-            actions.setSuccess(false); // Set success to false
-            actions.setError(true); // Set error to true
-
-            setTimeout(() => {
-               actions.setError(false);
-            }, 3000);
-         }
+         actions.deposit(amount);
       },
 
       validate: (values) => {
@@ -72,8 +29,6 @@ export default function Deposit() {
          return errors;
       },
    });
-
-   const isMobile = useMediaQuery({ maxWidth: 768 });
 
    return (
       <>
@@ -119,8 +74,8 @@ export default function Deposit() {
                                  {formik.errors.amount ? (
                                     <Error
                                        position={{
-                                          top: "17.3em",
-                                          right: "38em",
+                                          right: isMobile ? "8em" : "37.3em",
+                                          top: isMobile ? "11.7em" : "14.9em",
                                        }}
                                        id="emailError"
                                        message={formik.errors.amount}
@@ -129,6 +84,7 @@ export default function Deposit() {
                               </div>
                            </div>
                         </div>
+                        <br />
                         <button
                            type="submit"
                            className="btn btn-primary submitBtn"

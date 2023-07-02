@@ -38,9 +38,12 @@ const reducer = (state, action) => {
       {
          ADD_USER: { ...state, users: action.payload },
          LOGIN: { ...state, currentUser: action.payload },
-         SIGNOUT: { ...state, currentUser: null },
+         SIGNOUT: { ...initialState, currentUser: null },
          UPDATE_USERS: { ...state, users: action.payload },
-         UPDATE_USER: { ...state, currentUser: action.payload },
+         UPDATE_USER: {
+            ...state,
+            currentUser: { ...state.currentUser, ...action.payload },
+         },
          SET_SUCCESS: { ...state, success: action.payload },
          SET_ERROR: { ...state, error: action.payload },
       }[action.type] || state

@@ -5,7 +5,6 @@ import Card from "../util/card";
 
 export default function AllData() {
    const { state } = useContext(Store);
-
    const isMobile = useMediaQuery({ maxWidth: 768 });
 
    return (
@@ -13,8 +12,8 @@ export default function AllData() {
          <hr className="solid"></hr>
          <h3>ALL DATA</h3>
          <Card
-            maxWidth={isMobile ? "100%" : "800px"} // Adjust the maxWidth property to make the card responsive
-            header="List of all user credentials and balances"
+            maxWidth={isMobile ? "30em" : "50em"}
+            header="List of user's credentials and balances"
             bgcolor="secondary"
             body={
                <div style={{ overflow: "auto" }}>

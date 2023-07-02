@@ -19,11 +19,12 @@ export default function CreateAccount() {
       console.log(userObject);
       setShowGoogleLogin(false);
 
-      // Create an account for the user if logging in with Google
+      // Create Google account
+
       const { email, name, googleId } = userObject;
 
       try {
-         const accountData = { email, displayName: name, googleId };
+         const accountData = { email, name, googleId };
          const response = await axios.post(
             // "http://localhost:5000/accounts",
             "https://badbankmit-630937f70977.herokuapp.com/accounts",
@@ -44,7 +45,7 @@ export default function CreateAccount() {
          /* global google */
          google.accounts.id.initialize({
             client_id:
-               "1094822492534-7b32ecr3b8ruv2vrohm95fiv1pe8e9v7.apps.googleusercontent.com",
+               "1094822492534-djacotkfujd830p2b2l28s25dat8cjfc.apps.googleusercontent.com",
             callback: handleCallbackResponse,
          });
 
@@ -62,7 +63,10 @@ export default function CreateAccount() {
          email: "",
          password: "",
       },
-      onSubmit: async (values, { resetForm }) => {
+
+      // Create standard account
+
+      onSubmit: async (values) => {
          try {
             actions.addUser({ ...values, balance: 0 });
 
@@ -74,7 +78,6 @@ export default function CreateAccount() {
 
             console.log(response.status);
 
-            resetForm();
             setShow(false);
          } catch (error) {
             if (error.response) {
@@ -82,7 +85,6 @@ export default function CreateAccount() {
          }
       },
       onReset: (values) => {
-         // Reset the form and show it again
          setShow(true);
          actions.setSuccess(false);
       },
@@ -118,7 +120,7 @@ export default function CreateAccount() {
          <h3>CREATE ACCOUNT</h3>
 
          <Card
-            maxWidth={isMobile ? "100%" : "40%"} // Adjust the maxWidth property to make the card responsive
+            maxWidth={isMobile ? "20em" : "30em"}
             header="Create New Account"
             bgcolor="primary"
             body={
@@ -132,6 +134,7 @@ export default function CreateAccount() {
                         placeholder="Enter Name"
                         onChange={formik.handleChange}
                         value={formik.values.name}
+                        autoComplete="name"
                      />
                      <br />
                      {formik.errors.name && (
@@ -152,6 +155,7 @@ export default function CreateAccount() {
                         placeholder="Enter Email"
                         onChange={formik.handleChange}
                         value={formik.values.email}
+                        autoComplete="email"
                      />
                      <br />
                      {formik.errors.email && (
@@ -167,11 +171,13 @@ export default function CreateAccount() {
                      <label htmlFor="password">Password</label>
                      <input
                         type="password"
-                        id="password"
+                        id="pswField"
                         name="password"
-                        placeholder="Enter Password"
+                        placeholder="Password"
                         onChange={formik.handleChange}
                         value={formik.values.password}
+                        aria-label="password-field"
+                        autoComplete="current-password"
                      />
                      <br />
 
@@ -198,6 +204,7 @@ export default function CreateAccount() {
                   <>
                      <h5>Success</h5>
                      <button
+                        style={{ width: "200px" }}
                         type="submit"
                         className="btn btn-light"
                         onClick={formik.handleReset}

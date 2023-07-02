@@ -1,7 +1,6 @@
-import axios from "axios";
 import { useFormik } from "formik";
 import jwt_decode from "jwt-decode";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { useMediaQuery } from "react-responsive";
 import { Store } from "../AppState/Store";
 import Card from "../util/card";
@@ -9,13 +8,11 @@ import Error from "../util/error";
 
 export default function Login() {
    const { state, actions } = useContext(Store);
-   const [showGoogleLogin, setShowGoogleLogin] = useState(true);
 
    function handleCallbackResponse(response) {
       console.log("Encoded JWT ID token: " + response.credential);
-      var userObject = jwt_decode(response.credential);
+      const userObject = jwt_decode(response.credential);
       console.log(userObject);
-      setShowGoogleLogin(false);
 
       // Automatically create an account for the user if logging in with Google
       const { email } = userObject;
@@ -28,7 +25,7 @@ export default function Login() {
          /* global google */
          google.accounts.id.initialize({
             client_id:
-               "1094822492534-7b32ecr3b8ruv2vrohm95fiv1pe8e9v7.apps.googleusercontent.com",
+               "1094822492534-djacotkfujd830p2b2l28s25dat8cjfc.apps.googleusercontent.com",
             callback: handleCallbackResponse,
          });
 
@@ -46,16 +43,7 @@ export default function Login() {
          password: "",
       },
       onSubmit: async (values) => {
-         try {
-            await actions.logIn(values);
-         } catch (error) {
-            if (error.response && error.response.status === 404) {
-               // User does not exist
-               formik.setFieldError("email", "User does not exist");
-            } else {
-               // Other error occurred, handle it as needed
-            }
-         }
+         actions.logIn(values);
       },
 
       validate: (values) => {
@@ -84,7 +72,7 @@ export default function Login() {
 
          <Card
             bgcolor="primary"
-            maxWidth={isMobile ? "100%" : "40%"} // Adjust the maxWidth property to make the card responsive
+            maxWidth={isMobile ? "20em" : "30em"}
             header={
                state.currentUser ? "Login" : "Login Using Existing Credentials"
             }
@@ -105,6 +93,7 @@ export default function Login() {
                               onChange={formik.handleChange}
                               value={formik.values.email}
                               aria-label="email-field"
+                              autoComplete="username"
                            />
                            <div style={{ height: "10px" }} />
 
@@ -127,6 +116,7 @@ export default function Login() {
                               onChange={formik.handleChange}
                               value={formik.values.password}
                               aria-label="password-field"
+                              autoComplete="current-password"
                            />
                            <br />
 
@@ -162,13 +152,12 @@ export default function Login() {
          />
 
          <br />
-         {showGoogleLogin && (
-            <div className="google-account">
-               <h6>Login With Google</h6>
-               <div id="signInDiv"></div>
-               <br />
-            </div>
-         )}
+
+         <div className="google-account">
+            <h6>Log In With Google</h6>
+            <div id="signInDiv"></div>
+            <br />
+         </div>
       </>
    );
 }
