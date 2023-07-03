@@ -22,7 +22,6 @@ export const useActions = (state, dispatch) => {
          // Fetch user data from MongoDB using email and password
          const response = await axios.get(
             "https://badbankmit-cdb124d9b6ac.herokuapp.com/login",
-
             // "http://localhost:5000/login",
 
             {
@@ -69,7 +68,6 @@ export const useActions = (state, dispatch) => {
 
          const response = await axios.post(
             "https://badbankmit-cdb124d9b6ac.herokuapp.com/accounts/withdraw",
-
             // "http://localhost:5000/accounts/withdraw",
             { amount, email }
          );

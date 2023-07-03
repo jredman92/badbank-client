@@ -10,14 +10,12 @@ import "./pages.css";
 
 export default function CreateAccount() {
    const [show, setShow] = useState(true);
-   const [showGoogleLogin, setShowGoogleLogin] = useState(true);
 
    const { actions } = useContext(Store);
 
    async function handleCallbackResponse(response) {
       var userObject = jwt_decode(response.credential);
       console.log(userObject);
-      setShowGoogleLogin(false);
 
       // Create Google account
 
@@ -30,12 +28,18 @@ export default function CreateAccount() {
             "https://badbankmit-cdb124d9b6ac.herokuapp.com/accounts",
             accountData
          );
+
          console.log(response.status);
          actions.addUser({ email, name, balance: 0 }); // Add the user to the global state
          actions.setSuccess(true);
          setShow(false);
       } catch (error) {
-         if (error.response) {
+         if (error.response && error.response.status === 409) {
+            // Account already exists
+            console.log("User already exists");
+         } else {
+            // Other errors
+            console.log("Error creating account");
          }
       }
    }
@@ -71,8 +75,8 @@ export default function CreateAccount() {
             actions.addUser({ ...values, balance: 0 });
 
             const response = await axios.post(
-               "https://badbankmit-cdb124d9b6ac.herokuapp.com/accounts",
                // "http://localhost:5000/accounts",
+               "https://badbankmit-cdb124d9b6ac.herokuapp.com/accounts",
                values
             );
 
@@ -80,10 +84,16 @@ export default function CreateAccount() {
 
             setShow(false);
          } catch (error) {
-            if (error.response) {
+            if (error.response && error.response.status === 409) {
+               // Account already exists
+               console.log("User already exists");
+            } else {
+               // Other errors
+               console.log("Error creating account");
             }
          }
       },
+
       onReset: (values) => {
          setShow(true);
          actions.setSuccess(false);
@@ -216,13 +226,11 @@ export default function CreateAccount() {
             }
          />
          <br />
-         {showGoogleLogin && (
-            <div className="google-account">
-               <h6>Create Account With Google</h6>
-               <div id="signInDiv"></div>
-               <br />
-            </div>
-         )}
+         <div className="google-account">
+            <h6>Create Account With Google</h6>
+            <div id="signInDiv"></div>
+            <br />
+         </div>
       </>
    );
 }
