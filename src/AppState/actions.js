@@ -21,8 +21,8 @@ export const useActions = (state, dispatch) => {
       try {
          // Fetch user data from MongoDB using email and password
          const response = await axios.get(
-            "https://badbankmit-cdb124d9b6ac.herokuapp.com/login",
-            // "http://localhost:5000/login",
+            // "https://badbankmit-cdb124d9b6ac.herokuapp.com/login",
+            "http://localhost:5000/login",
 
             {
                params: {
@@ -67,8 +67,8 @@ export const useActions = (state, dispatch) => {
          console.log(amount);
 
          const response = await axios.post(
-            "https://badbankmit-cdb124d9b6ac.herokuapp.com/accounts/withdraw",
-            // "http://localhost:5000/accounts/withdraw",
+            // "https://badbankmit-cdb124d9b6ac.herokuapp.com/accounts/withdraw",
+            "http://localhost:5000/accounts/withdraw",
             { amount, email }
          );
 
@@ -112,8 +112,8 @@ export const useActions = (state, dispatch) => {
          console.log(amount);
 
          const response = await axios.post(
-            "https://badbankmit-cdb124d9b6ac.herokuapp.com/accounts/deposit",
-            // "http://localhost:5000/accounts/deposit",
+            // "https://badbankmit-cdb124d9b6ac.herokuapp.com/accounts/deposit",
+            "http://localhost:5000/accounts/deposit",
             { amount, email }
          );
 

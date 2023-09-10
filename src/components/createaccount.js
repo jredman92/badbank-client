@@ -19,13 +19,13 @@ export default function CreateAccount() {
 
       // Create Google account
 
-      const { email, name, googleId } = userObject;
+      const { email, name } = userObject;
 
       try {
-         const accountData = { email, name, googleId };
+         const accountData = { email, name };
          const response = await axios.post(
-            // "http://localhost:5000/accounts",
-            "https://badbankmit-cdb124d9b6ac.herokuapp.com/accounts",
+            "http://localhost:5000/accounts",
+            // "https://badbankmit-cdb124d9b6ac.herokuapp.com/accounts",
             accountData
          );
 
@@ -75,8 +75,8 @@ export default function CreateAccount() {
             actions.addUser({ ...values, balance: 0 });
 
             const response = await axios.post(
-               // "http://localhost:5000/accounts",
-               "https://badbankmit-cdb124d9b6ac.herokuapp.com/accounts",
+               "http://localhost:5000/accounts",
+               // "https://badbankmit-cdb124d9b6ac.herokuapp.com/accounts",
                values
             );
 
